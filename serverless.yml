@@ -16,7 +16,7 @@
 # CUSTOM INFO: https://medium.com/better-programming/set-up-a-ci-cd-pipeline-for-aws-lambda-with-github-actions-and-serverless-in-under-5-minutes-fd070da9d143
 # CORS INFO: https://www.serverless.com/framework/docs/providers/aws/events/apigateway/#responses
 # IAMROLE INFO: https://www.serverless.com/framework/docs/providers/aws/guide/iam/
-#
+# package.individually = true -- so functions are individually grouped, not compiled together. 
 #
 
 service: article-app
@@ -40,7 +40,7 @@ package:
 
 functions:
   post_article: #Update
-    handler: handler.function
+    handler: index.function
     module: postArticle #Update
     events:
       - http:
@@ -63,7 +63,7 @@ functions:
             passThrough: WHEN_NO_MATCH
             contentHandling: CONVERT_TO_TEXT
   list_articles: #Update
-    handler: handler.function
+    handler: index.function
     module: listArticles #Update
     events:
       - http:
