@@ -13,6 +13,11 @@
 
 # Docs #
 # This file contains lambda functions and their iam-roles
+# CUSTOM INFO: https://medium.com/better-programming/set-up-a-ci-cd-pipeline-for-aws-lambda-with-github-actions-and-serverless-in-under-5-minutes-fd070da9d143
+# CORS INFO: https://www.serverless.com/framework/docs/providers/aws/events/apigateway/#responses
+# IAMROLE INFO: https://www.serverless.com/framework/docs/providers/aws/guide/iam/
+#
+#
 
 service: article-app
 
@@ -22,19 +27,19 @@ provider:
   region: us-east-1
   stage: prod
 
-custom: #https://medium.com/better-programming/set-up-a-ci-cd-pipeline-for-aws-lambda-with-github-actions-and-serverless-in-under-5-minutes-fd070da9d143
+custom:
   pythonRequirements:
     dockerizePip: true
 
 package:
-  individually: false
+  individually: true
   exclude:
     - package.json
     - package-log.json
     - node_modules/**
 
 functions:
-  post_news: #Update
+  post_article: #Update
     handler: handler.function
     module: postArticle #Update
     events:
@@ -43,7 +48,30 @@ functions:
           method: post
           role: LambdaExecutionRoleArticleApp
           authorizer: aws_iam
-          cors: #https://www.serverless.com/framework/docs/providers/aws/events/apigateway/#responses
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+          request: 
+            passThrough: WHEN_NO_MATCH
+            contentHandling: CONVERT_TO_TEXT
+          response:
+            passThrough: WHEN_NO_MATCH
+            contentHandling: CONVERT_TO_TEXT
+  list_articles: #Update
+    handler: handler.function
+    module: listArticles #Update
+    events:
+      - http:
+          path: listArticles #Update
+          method: post
+          role: LambdaExecutionRoleArticleApp
+          authorizer: aws_iam
+          cors:
             origin: '*'
             headers:
               - Content-Type
@@ -60,7 +88,7 @@ functions:
 
 resources:
   Resources:
-    DynamoDbExecutionRole: #https://www.serverless.com/framework/docs/providers/aws/guide/iam/
+    DynamoDbExecutionRole:
       Type: AWS::IAM::Role
       Properties: 
         RoleName: LambdaExecutionRoleArticleApp
