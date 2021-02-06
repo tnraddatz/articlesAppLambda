@@ -1,0 +1,96 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+# Docs #
+# This file contains lambda functions and their iam-roles
+
+service: article-app
+
+provider:
+  name: aws
+  role: DynamoDbExecutionRole
+  runtime: python3.7
+  region: us-east-1
+  stage: prod
+
+custom: #https://medium.com/better-programming/set-up-a-ci-cd-pipeline-for-aws-lambda-with-github-actions-and-serverless-in-under-5-minutes-fd070da9d143
+  pythonRequirements:
+    dockerizePip: true
+
+package:
+  individually: false
+  exclude:
+    - package.json
+    - package-log.json
+    - node_modules/**
+
+functions:
+  post_news: #Update
+    handler: handler.function
+    module: postArticle #Update
+    events:
+      - http:
+          stage: prod
+          path: postArticle #Update
+          method: post
+          authorizer: aws_iam
+          cors: #https://www.serverless.com/framework/docs/providers/aws/events/apigateway/#responses
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+          request: 
+            passThrough: WHEN_NO_MATCH
+            contentHandling: CONVERT_TO_TEXT
+          response:
+            passThrough: WHEN_NO_MATCH
+            contentHandling: CONVERT_TO_TEXT
+
+resources:
+  Resources:
+    DynamoDbExecutionRole:
+      Type: AWS::IAM::Role
+      Properties: 
+        RoleName: DynamoDbExecutionRole
+        AssumeRolePolicyDocument: 
+          Version: 2012-10-17
+          Statement: 
+            - 
+              Effect: Allow
+              Principal: 
+                Service: 
+                  - lambda.amazonaws.com
+              Action: 
+                - "sts:AssumeRole"
+        Path: "/article_app/"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Policies: 
+          - 
+            PolicyName: DynamoDbExecutionRolePolicy
+            PolicyDocument: 
+              Version: 2012-10-17
+              Statement: 
+                - 
+                  Effect: Allow
+                  Action: 
+                    - dynamodb:PutItem
+                    - dynamodb:Scan
+                    - dynamodb:Query
+                  Resource: arn:aws:dynamodb:us-east-1:115927972738:table/DynamoDevNewsTable
+
+plugins:
+  - serverless-python-requirements
