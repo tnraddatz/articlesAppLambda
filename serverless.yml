@@ -40,7 +40,7 @@ package:
 
 functions:
   post_article: #Update
-    handler: index.function
+    handler: index.main
     module: postArticle #Update
     events:
       - http:
@@ -63,7 +63,7 @@ functions:
             passThrough: WHEN_NO_MATCH
             contentHandling: CONVERT_TO_TEXT
   list_articles: #Update
-    handler: index.function
+    handler: index.main
     module: listArticles #Update
     events:
       - http:

@@ -2,7 +2,7 @@ import json
 import pyjokes
 
 
-def function(event, context):
+def main(event, context):
     body = {
         "message": "Go Serverless v1.0! Your function executed successfullys!",
         "joke": pyjokes.get_joke()
