@@ -6,8 +6,8 @@ from urllib.parse import urlparse
 
 def main(event, context):
     # parameters
-    event = json.loads(event)
-    website_url = event['website_url']
+    parameters = json.loads(event.body)
+    website_url = parameters['website_url']
     # end
 
     # --- Normalize incoming URLs ---
