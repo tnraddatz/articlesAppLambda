@@ -1,5 +1,6 @@
 import json
 import boto3
+import html5lib
 from webpreview import web_preview
 from urllib.parse import urlparse
 
@@ -34,7 +35,7 @@ def main(event, context):
     # -----------------------------
 
     # Connect to DB and record transaction
-    ddb = boto3.client('dynamodb')
+    ddb = boto3.resource('dynamodb')
     table = ddb.Table('DynamoDevNewsTable')  # TODO: Edit Table Name
 
     ddb_response = table.put_item(
