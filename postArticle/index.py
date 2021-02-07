@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 def main(event, context):
     # parameters
+    event = json.loads(event)
     website_url = event['website_url']
     # end
 
