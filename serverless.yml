@@ -42,11 +42,11 @@ functions:
   post_article: #Update
     handler: index.main
     module: postArticle #Update
+    role: LambdaExecutionRoleArticleApp
     events:
       - http:
           path: postArticle #Update
           method: post
-          role: LambdaExecutionRoleArticleApp
           authorizer: aws_iam
           cors:
             origin: '*'
@@ -65,11 +65,11 @@ functions:
   list_articles: #Update
     handler: index.main
     module: listArticles #Update
+    role: LambdaExecutionRoleArticleApp
     events:
       - http:
           path: listArticles #Update
           method: post
-          role: LambdaExecutionRoleArticleApp
           authorizer: aws_iam
           cors:
             origin: '*'
