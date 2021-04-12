@@ -88,7 +88,7 @@ functions:
 
 resources:
   Resources:
-    DynamoDbExecutionRole:
+    LambdaExecutionRoleArticleApp:
       Type: AWS::IAM::Role
       Properties: 
         RoleName: LambdaExecutionRoleArticleApp
@@ -109,8 +109,7 @@ resources:
             PolicyDocument: 
               Version: '2012-10-17'
               Statement: 
-                - 
-                  Effect: Allow
+                - Effect: Allow
                   Action: 
                     - dynamodb:PutItem
                     - dynamodb:Scan
@@ -128,7 +127,6 @@ resources:
                   Resource:
                     - 'Fn::Join':
                       - ':'
-                      -
                         - 'arn:aws:logs'
                         - Ref: 'AWS::Region'
                         - Ref: 'AWS::AccountId'
