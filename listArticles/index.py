@@ -1,8 +1,5 @@
 import json
 import boto3
-import html5lib
-from webpreview import web_preview
-from urllib.parse import urlparse
 
 
 def main(event, context):
