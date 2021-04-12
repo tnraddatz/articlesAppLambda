@@ -6,7 +6,6 @@ def main(event, context):
     try:
         # parameters
         params = json.loads(event['body'])
-        website_url = params['website_url']
         # ends
 
         # Connect to DB and record transaction
