@@ -42,7 +42,7 @@ functions:
   post_article: #Update
     handler: index.main
     module: postArticle #Update
-    role: LambdaExecutionRoleArticleApp
+    role: LambdaExecutionRoleLocalApp
     events:
       - http:
           path: postArticle #Update
@@ -65,7 +65,7 @@ functions:
   list_articles: #Update
     handler: index.main
     module: listArticles #Update
-    role: LambdaExecutionRoleArticleApp
+    role: LambdaExecutionRoleLocalApp
     events:
       - http:
           path: listArticles #Update
@@ -88,10 +88,10 @@ functions:
 
 resources:
   Resources:
-    LambdaExecutionRoleArticleApp:
+    LambdaExecutionRoleLocalApp:
       Type: AWS::IAM::Role
       Properties: 
-        RoleName: LambdaExecutionRoleArticleApp
+        RoleName: LambdaExecutionRoleLocalApp
         AssumeRolePolicyDocument: 
           Version: '2012-10-17'
           Statement: 
